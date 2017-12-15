@@ -1,31 +1,61 @@
-var str = "banana";
-var guess = [];
+//var demop = document.getElementById("demo");
+var listoffruits = [
+    "apple",
+    "banana",
+    "guava"
+];
+var targetFruit = listoffruits[Math.floor(Math.random() * listoffruits.length)];
+console.log(targetFruit);
 
+var hangman = {
+    fruit: targetFruit,
+    fillguess: [],
+    isGuesssRight: false,
+    resultshow:"",
+    guessCount: 0,
 
-for (let j = 0; j < str.length; j++) {
-    guess.push("_");
+    PopulateGuessBlanks: function(){
+        for (let j = 0; j < this.fruit.length; j++) {
+            this.fillguess.push("_");
+            console.log(this.fruit[j]);
+        } 
+    },
+
+    GuessTheWord: function(letter){
+        this.guessCount = false;        
+        var valid = this.fruit.indexOf(letter);
+        while (valid !== -1) {
+            this.fillguess[valid] = letter;
+            valid = this.fruit.indexOf(letter, valid + 1);
+            this.isGuesssRight = true;
+
+        }
+        if(this.isGuesssRight === false){
+            this.guessCount++;
+        } 
+    },
     
-    //console.log(str[j]);
-}
-console.log(guess.length);
-var demop = document.getElementById("demo");
-//demop.innerHTML = (guess);
-var pos = " ";
-var valid = str.indexOf('a');
+    Show: function(){
+        
+        this.resultshow = this.fillguess.join(" ");
+        console.log(this.resultshow);
+        $("#demo").append("<p>" + this.resultshow + "</p>");
+        //demop.innerHTML = (this.resultshow); 
+    }
 
-while (valid !== -1) {
-    //console.log(valid);
-    //count++;
-    //pos += valid;
-    guess[valid] = 'a';
-    valid = str.indexOf('a', valid + 1);
-    
-    
-}
-console.log(pos);
+};
 
-for (let j = 0; j < str.length; j++) {
+hangman.PopulateGuessBlanks();
+hangman.Show();
 
-    demop.innerHTML = demop.innerHTML + (" " + guess[j]) ;
-    //console.log(str[j]);
-}
+document.onkeyup = function (event) {
+
+    // Captures the key press, converts it to lowercase, and saves it to a variable.
+    var letter = String.fromCharCode(event.keyCode).toLowerCase();
+    hangman.GuessTheWord(letter);
+    hangman.Show();
+    if(hangman.guessCount===10)
+    {
+        return false;    
+    }
+};
