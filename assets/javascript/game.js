@@ -83,12 +83,12 @@ $(document).ready(function () {
             console.log(this.guessCount);
             //$("#demo").append("<p>" + this.resultshow + "</p>");
             
-            if((this.actualResult === this.targetFruit) && (this.guessCount < 10))
+            if((this.actualResult === this.fruit) && (this.guessCount < 10))
             {
                 this.isWin = true;
                 this.isLost = false;
             } 
-            else if ((this.actualResult !== this.targetFruit) && (this.guessCount >= 10)){
+            else if ((this.actualResult !== this.fruit) && (this.guessCount >= 10)){
                 this.isWin = false;
                 this.isLost = true;
             }
@@ -118,7 +118,7 @@ $(document).ready(function () {
         //var letter = $(this).attr("data-letter");
         
         var letter = $(this).attr("data-letter").toLowerCase();
-        if (hangman.guessCount < 10) {
+        if ((hangman.guessCount < 10)&&(hangman.isWin==false)) {
             console.log(letter);
             hangman.GuessTheWord(letter);
             hangman.Show();
